@@ -1,14 +1,14 @@
 <?php
 
-namespace Omniguard\Turnstile\Tests;
+namespace Omnishield\Turnstile\Tests;
 
-use Omniguard\ChallengeInterface;
-use Omniguard\Exception\InvalidConfigException;
-use Omniguard\Exception\InvalidKeyException;
-use Omniguard\Exception\UnreachableException;
-use Omniguard\Model\Attempt;
-use Omniguard\Model\Verdict;
-use Omniguard\Turnstile\TurnstileGatewayFactory;
+use Omnishield\ChallengeInterface;
+use Omnishield\Exception\InvalidConfigException;
+use Omnishield\Exception\InvalidKeyException;
+use Omnishield\Exception\UnreachableException;
+use Omnishield\Model\Attempt;
+use Omnishield\Model\Verdict;
+use Omnishield\Turnstile\TurnstileGatewayFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;

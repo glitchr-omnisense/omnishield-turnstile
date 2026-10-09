@@ -1,15 +1,15 @@
 {
-    "name": "omniguard/turnstile",
+    "name": "omnishield/turnstile",
     "type": "library",
-    "description": "Omniguard Turnstile: Cloudflare's captcha - the widget, and its token checked by Cloudflare's siteverify (the visitor's address, the action and the host checked back, a request retried under its idempotency key).",
+    "description": "Omnishield Turnstile: Cloudflare's captcha - the widget, and its token checked by Cloudflare's siteverify (the visitor's address, the action and the host checked back, a request retried under its idempotency key).",
     "keywords": [
         "captcha",
         "turnstile",
         "cloudflare",
         "antispam",
-        "omniguard"
+        "omnishield"
     ],
-    "homepage": "https://github.com/glitchr-studio/omniguard-turnstile",
+    "homepage": "https://github.com/glitchr-studio/omnishield-turnstile",
     "license": "MIT",
     "authors": [
         {
@@ -19,7 +19,7 @@
     ],
     "require": {
         "php": ">=8.2",
-        "glitchr/omniguard": "^1.0@dev",
+        "glitchr/omnishield": "^1.0@dev",
         "symfony/http-client": "^6.4|^7.0|^8.0"
     },
     "require-dev": {
@@ -27,7 +27,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Omniguard\\Turnstile\\": ""
+            "Omnishield\\Turnstile\\": ""
         },
         "exclude-from-classmap": [
             "/Tests/"
@@ -35,7 +35,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Omniguard\\Turnstile\\Tests\\": "Tests/"
+            "Omnishield\\Turnstile\\Tests\\": "Tests/"
         }
     },
     "config": {

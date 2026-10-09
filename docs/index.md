@@ -1,17 +1,17 @@
 ---
-title: omniguard/turnstile
+title: omnishield/turnstile
 order: 1
 ---
 
-# omniguard/turnstile
+# omnishield/turnstile
 
 ## Installation
 
 ```sh
-composer require omniguard/turnstile
+composer require omnishield/turnstile
 ```
 
-PHP 8.2 or later, `glitchr/omniguard` and `symfony/http-client` (a library; give the factory your
+PHP 8.2 or later, `glitchr/omnishield` and `symfony/http-client` (a library; give the factory your
 application's client, a `MockHttpClient` in a test).
 
 ## The sources
@@ -73,7 +73,7 @@ no action: with them the action and the host are not checked, and the verdict's 
 
 | | |
 |---|---|
-| The three testing secrets against `siteverify` | **done on 2026-10-07** (`docker compose run --rm omniguard bare --live`, the tests' recorded answers): 1x passes (host `example.com`), 2x `invalid-input-response`, 3x `timeout-or-duplicate`; an empty response `missing-input-response`; a made-up secret `invalid-input-secret`; the JSON body with an `idempotency_key` passes as the form body does |
+| The three testing secrets against `siteverify` | **done on 2026-10-07** (`docker compose run --rm omnishield bare --live`, the tests' recorded answers): 1x passes (host `example.com`), 2x `invalid-input-response`, 3x `timeout-or-duplicate`; an empty response `missing-input-response`; a made-up secret `invalid-input-secret`; the JSON body with an `idempotency_key` passes as the form body does |
 | A real site key, a real token from a browser | **not verified**: no Cloudflare account. The answer with an action (`siteverify-production-passes.json`) is written from the documentation's fields |
 | The retry under the same idempotency key | by the tests; Cloudflare's own handling of a repeated key not observed |
 | The widget in a browser | not done: its markup follows the documentation |

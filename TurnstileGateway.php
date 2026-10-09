@@ -1,16 +1,16 @@
 <?php
 
-namespace Omniguard\Turnstile;
+namespace Omnishield\Turnstile;
 
-use Omniguard\ChallengeInterface;
-use Omniguard\Exception\InvalidKeyException;
-use Omniguard\Exception\ProviderException;
-use Omniguard\Exception\UnreachableException;
-use Omniguard\Http\Answer;
-use Omniguard\Model\Attempt;
-use Omniguard\Model\Capabilities;
-use Omniguard\Model\Verdict;
-use Omniguard\Model\Widget;
+use Omnishield\ChallengeInterface;
+use Omnishield\Exception\InvalidKeyException;
+use Omnishield\Exception\ProviderException;
+use Omnishield\Exception\UnreachableException;
+use Omnishield\Http\Answer;
+use Omnishield\Model\Attempt;
+use Omnishield\Model\Capabilities;
+use Omnishield\Model\Verdict;
+use Omnishield\Model\Widget;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**

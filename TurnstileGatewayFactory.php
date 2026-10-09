@@ -1,10 +1,10 @@
 <?php
 
-namespace Omniguard\Turnstile;
+namespace Omnishield\Turnstile;
 
-use Omniguard\Config;
-use Omniguard\GatewayFactory;
-use Omniguard\GatewayInterface;
+use Omnishield\Config;
+use Omnishield\GatewayFactory;
+use Omnishield\GatewayInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -38,9 +38,9 @@ final class TurnstileGatewayFactory extends GatewayFactory
     protected function populate(Config $c): void
     {
         $c->defaults([
-            'omniguard.factory_name' => 'turnstile',
-            'omniguard.factory_title' => 'Cloudflare Turnstile',
-            'omniguard.required_options' => ['site_key', 'secret'],
+            'omnishield.factory_name' => 'turnstile',
+            'omnishield.factory_title' => 'Cloudflare Turnstile',
+            'omnishield.required_options' => ['site_key', 'secret'],
             'theme' => null,
             'size' => null,
             'appearance' => null,
