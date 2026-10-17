@@ -1,6 +1,6 @@
 # omnishield/turnstile
 
-**Cloudflare Turnstile** for [glitchr/omnishield](https://github.com/glitchr-studio/omnishield): the
+**Cloudflare Turnstile** for [omniscient/omnishield](https://github.com/glitchr-studio/omnishield): the
 widget from Cloudflare, its token checked by Cloudflare's `siteverify` - the visitor's address
 sent with it, the action and the host checked back, a request that got no answer sent once more
 under the same idempotency key.
