@@ -31,7 +31,7 @@ name it in the privacy policy, and see what the CNIL says of captchas in omnishi
 [privacy](https://github.com/glitchr-studio/omnishield/blob/1.x/docs/privacy.md). No cookie, by
 Cloudflare's Turnstile privacy addendum.
 
-[Documentation](docs/index.md): the options, the answers, the testing keys, what was verified -
+[Documentation](docs/index.md): what it calls, the credentials, the capabilities, an example run offline, the errors, the options, the answers, the testing keys, what was verified -
 the three testing secrets against Cloudflare, on 2026-10-07.
 
 ## Responsibility
