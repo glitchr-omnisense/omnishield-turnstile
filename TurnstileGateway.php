@@ -96,6 +96,9 @@ final class TurnstileGateway implements ChallengeInterface
             // The same key: Cloudflare answers a retry as it answered the first, if it did.
             $answer = $this->siteverify($body);
         }
+        if (\in_array($answer->status, [401, 403], true)) {
+            throw new InvalidKeyException('turnstile', \sprintf('HTTP %d: the secret was refused.', $answer->status), (string) $answer->status);
+        }
         if (400 <= $answer->status && !str_starts_with(trim($answer->body), '{')) {
             throw new ProviderException('turnstile', \sprintf('HTTP %d: %s', $answer->status, mb_substr(trim($answer->body), 0, 200)));
         }

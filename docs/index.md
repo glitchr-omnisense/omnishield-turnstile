@@ -73,6 +73,7 @@ no action: with them the action and the host are not checked, and the verdict's 
 
 | | |
 |---|---|
+| The family's conformance suite (`Omnishield\Testing\GatewayContractTests`) | **green on 2026-10-25**, offline: `Tests/TurnstileContractTest.php` on the recorded answers; HTTP 401/403 now an `InvalidKeyException` |
 | The three testing secrets against `siteverify` | **done on 2026-10-07** (`docker compose run --rm omnishield bare --live`, the tests' recorded answers): 1x passes (host `example.com`), 2x `invalid-input-response`, 3x `timeout-or-duplicate`; an empty response `missing-input-response`; a made-up secret `invalid-input-secret`; the JSON body with an `idempotency_key` passes as the form body does |
 | A real site key, a real token from a browser | **not verified**: no Cloudflare account. The answer with an action (`siteverify-production-passes.json`) is written from the documentation's fields |
 | The retry under the same idempotency key | by the tests; Cloudflare's own handling of a repeated key not observed |
