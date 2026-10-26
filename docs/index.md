@@ -12,7 +12,7 @@ which the gateway recognises.
 composer require omnishield/turnstile
 ```
 
-PHP 8.2 or later, `omniscient/omnishield` and `symfony/http-client` (a library; give the factory your
+PHP 8.2 or later, `omnisense/omnishield` and `symfony/http-client` (a library; give the factory your
 application's client, a `MockHttpClient` in a test).
 
 ## Credentials

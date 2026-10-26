@@ -1,6 +1,6 @@
 # omnishield/turnstile
 
-**Cloudflare Turnstile** for [omniscient/omnishield](https://github.com/glitchr-studio/omnishield): the
+**Cloudflare Turnstile** for [omnisense/omnishield](https://github.com/glitchr-omnisense/omnishield): the
 widget from Cloudflare, its token checked by Cloudflare's `siteverify` - the visitor's address
 sent with it, the action and the host checked back, a request that got no answer sent once more
 under the same idempotency key.
@@ -28,7 +28,7 @@ omnishield:
 
 The visitor's browser talks to Cloudflare (`Widget::$origins`: `https://challenges.cloudflare.com`):
 name it in the privacy policy, and see what the CNIL says of captchas in omnishield's
-[privacy](https://github.com/glitchr-studio/omnishield/blob/1.x/docs/privacy.md). No cookie, by
+[privacy](https://github.com/glitchr-omnisense/omnishield/blob/1.x/docs/privacy.md). No cookie, by
 Cloudflare's Turnstile privacy addendum.
 
 [Documentation](docs/index.md): what it calls, the credentials, the capabilities, an example run offline, the errors, the options, the answers, the testing keys, what was verified -
