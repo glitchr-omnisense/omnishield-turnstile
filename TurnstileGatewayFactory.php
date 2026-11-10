@@ -64,6 +64,7 @@ final class TurnstileGatewayFactory extends GatewayFactory
             $c->string('field') ?? TurnstileGateway::FIELD,
             $c->bool('idempotency'),
             $c->string('base_uri') ?? TurnstileGateway::BASE_URI,
+            $c->backoff(),
         );
     }
 }

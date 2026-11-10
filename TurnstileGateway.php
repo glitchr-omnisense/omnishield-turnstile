@@ -2,6 +2,9 @@
 
 namespace Omnishield\Turnstile;
 
+use Omnisense\Contracts\Policy\Backoff;
+use Omnisense\Contracts\Policy\DeclaresUsagePolicyInterface;
+use Omnisense\Contracts\Policy\UsagePolicy;
 use Omnishield\ChallengeInterface;
 use Omnishield\Exception\InvalidKeyException;
 use Omnishield\Exception\ProviderException;
@@ -20,8 +23,13 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  * challenge_ts, hostname, action and error-codes. A token lasts 300 seconds,
  * serves once, and is at most 2048 characters long.
  */
-final class TurnstileGateway implements ChallengeInterface
+final class TurnstileGateway implements ChallengeInterface, DeclaresUsagePolicyInterface
 {
+    /** The usage policy its package declares (omnisense/contracts' schema). */
+    public const POLICY = __DIR__.'/policy.json';
+
+    private static ?UsagePolicy $policy = null;
+
     public const BASE_URI = 'https://challenges.cloudflare.com/turnstile/v0/';
     public const SCRIPT = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
     public const FIELD = 'cf-turnstile-response';
@@ -43,6 +51,7 @@ final class TurnstileGateway implements ChallengeInterface
         private readonly string $field = self::FIELD,
         private readonly bool $idempotency = true,
         private readonly string $baseUri = self::BASE_URI,
+        private readonly ?Backoff $backoff = null,
     ) {
     }
 
@@ -58,7 +67,13 @@ final class TurnstileGateway implements ChallengeInterface
 
     public function capabilities(): Capabilities
     {
-        return new Capabilities(challenge: true, thirdParty: true, cookies: false, scores: false, actions: true);
+        return new Capabilities(challenge: true, thirdParty: true, cookies: false, scores: false, actions: true, policy: $this->usagePolicy());
+    }
+
+    /** Its usage policy, as its package declares it: policy.json beside this class. */
+    public function usagePolicy(): UsagePolicy
+    {
+        return self::$policy ??= UsagePolicy::fromFile(self::POLICY);
     }
 
     public function widget(?string $action = null): Widget
@@ -140,7 +155,7 @@ final class TurnstileGateway implements ChallengeInterface
     /** @param array<string, string> $body */
     private function siteverify(array $body): Answer
     {
-        return Answer::send($this->http, 'turnstile', 'POST', rtrim($this->baseUri, '/').'/siteverify', ['body' => $body]);
+        return Answer::send($this->http, 'turnstile', 'POST', rtrim($this->baseUri, '/').'/siteverify', ['body' => $body], $this->backoff);
     }
 
     private static function date(mixed $value): ?\DateTimeImmutable

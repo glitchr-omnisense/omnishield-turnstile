@@ -1,0 +1,37 @@
+{
+    "$schema": "https://github.com/glitchr-omnisense/contracts/blob/1.x/resources/usage-policy.schema.json",
+    "provider": "turnstile",
+    "rateLimits": [],
+    "rights": {
+        "commercial": "allowed",
+        "openSourceRequired": null,
+        "caching": {
+            "permission": "unknown",
+            "maxTtl": null
+        },
+        "storage": "unknown",
+        "redistribution": "unknown",
+        "attribution": {
+            "required": false,
+            "text": null,
+            "url": null,
+            "where": []
+        },
+        "licence": null
+    },
+    "requirements": {
+        "key": true,
+        "userAgent": {
+            "required": false,
+            "pattern": null
+        }
+    },
+    "provenance": {
+        "terms": "https://www.cloudflare.com/service-specific-terms-application-services/",
+        "policy": "https://developers.cloudflare.com/turnstile/plans/",
+        "contact": null,
+        "notes": "The Free plan lists \"Unlimited challenges (traffic or verification requests)\": no rate limit declared. Free: up to 20 widgets, 10 hostnames per widget, analytics over 7 days; Cloudflare's branding stays on the widget (removing it is Enterprise's \"Offlabel\"), nothing else to credit. No commercial restriction: the Free plan is described for personal sites, small to medium businesses and most production applications. Caching, storage and redistribution are not addressed (a token is single use: there is nothing to cache).",
+        "verifiedAt": "2026-11-10",
+        "declaredBy": "maintainer"
+    }
+}
