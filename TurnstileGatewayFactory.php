@@ -58,13 +58,39 @@ final class TurnstileGatewayFactory extends GatewayFactory
 
         return new TurnstileGateway(
             $this->http ?? HttpClient::create(),
-            (string) $c['site_key'],
-            (string) $c['secret'],
-            $attributes + (array) $c['attributes'],
+            self::text($c['site_key']),
+            self::text($c['secret']),
+            $attributes + self::attributes($c['attributes']),
             $c->string('field') ?? TurnstileGateway::FIELD,
             $c->bool('idempotency'),
             $c->string('base_uri') ?? TurnstileGateway::BASE_URI,
             $c->backoff(),
         );
+    }
+
+    /** An option as the (string) cast read it: a scalar as text, anything else empty. */
+    private static function text(mixed $value): string
+    {
+        return \is_scalar($value) || $value instanceof \Stringable ? (string) $value : '';
+    }
+
+    /**
+     * The widget's attributes as the (array) cast gave them, printed the same: a text or a boolean as
+     * it is, a number as its text; what the widget never prints (null, a nested value) left out.
+     *
+     * @return array<string, string|bool>
+     */
+    private static function attributes(mixed $value): array
+    {
+        $attributes = [];
+        foreach ((array) $value as $name => $one) {
+            if (\is_string($one) || \is_bool($one)) {
+                $attributes[(string) $name] = $one;
+            } elseif (\is_int($one) || \is_float($one)) {
+                $attributes[(string) $name] = (string) $one;
+            }
+        }
+
+        return $attributes;
     }
 }

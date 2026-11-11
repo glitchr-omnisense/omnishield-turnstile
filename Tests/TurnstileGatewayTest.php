@@ -25,21 +25,33 @@ final class TurnstileGatewayTest extends TestCase
 {
     private const TOKEN = 'XXXX.DUMMY.TOKEN.XXXX';
 
-    /** @var list<array{string, string, array<string, string>}> */
+    /** @var list<array{string, string, array<int|string, array<mixed>|string>}> */
     private array $calls = [];
 
-    /** @param list<MockResponse|string> $answers fixtures' names, or responses */
+    /**
+     * @param list<MockResponse|string> $answers fixtures' names, or responses
+     * @param array<string, mixed>      $options
+     */
     private function gateway(array $answers, array $options = []): ChallengeInterface
     {
         $http = new MockHttpClient(function (string $method, string $url, array $options) use (&$answers): MockResponse {
-            parse_str((string) $options['body'], $body);
+            self::assertIsString($options['body']);
+            parse_str($options['body'], $body);
             $this->calls[] = [$method, $url, $body];
             $answer = array_shift($answers) ?? throw new \LogicException('No answer left.');
 
             return $answer instanceof MockResponse ? $answer : new MockResponse((string) file_get_contents(__DIR__.'/Fixtures/'.$answer), ['response_headers' => ['content-type' => 'application/json']]);
         });
 
-        return (new TurnstileGatewayFactory($http))->create($options + ['site_key' => '1x00000000000000000000AA', 'secret' => '1x0000000000000000000000000000000AA']);
+        $gateway = (new TurnstileGatewayFactory($http))->create($options + ['site_key' => '1x00000000000000000000AA', 'secret' => '1x0000000000000000000000000000000AA']);
+        self::assertInstanceOf(ChallengeInterface::class, $gateway);
+
+        return $gateway;
+    }
+
+    private function forgetCalls(): void
+    {
+        $this->calls = [];
     }
 
     public function testATokenPassesAndTheVisitorsAddressIsSentWithAnIdempotencyKey(): void
@@ -54,6 +66,7 @@ final class TurnstileGatewayTest extends TestCase
         self::assertSame(['POST', 'https://challenges.cloudflare.com/turnstile/v0/siteverify'], [$method, $url]);
         self::assertSame(['secret', 'response', 'remoteip', 'idempotency_key'], array_keys($body));
         self::assertSame([self::TOKEN, '192.0.2.10'], [$body['response'], $body['remoteip']]);
+        self::assertIsString($body['idempotency_key']);
         self::assertMatchesRegularExpression('~^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$~', $body['idempotency_key']);
     }
 
@@ -116,7 +129,7 @@ final class TurnstileGatewayTest extends TestCase
                 self::assertSame('turnstile', $e->provider);
             }
         }
-        $this->calls = [];
+        $this->forgetCalls();
         $this->expectException(UnreachableException::class);
         try {
             $this->gateway([new MockResponse('', ['error' => 'timeout'])], ['idempotency' => false])->verify(new Attempt(self::TOKEN));

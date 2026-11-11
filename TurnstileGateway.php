@@ -118,7 +118,7 @@ final class TurnstileGateway implements ChallengeInterface, DeclaresUsagePolicyI
             throw new ProviderException('turnstile', \sprintf('HTTP %d: %s', $answer->status, mb_substr(trim($answer->body), 0, 200)));
         }
         $data = $answer->json();
-        $codes = array_values(array_map('strval', (array) ($data['error-codes'] ?? [])));
+        $codes = self::texts($data['error-codes'] ?? []);
 
         if (array_intersect($codes, ['missing-input-secret', 'invalid-input-secret'])) {
             throw new InvalidKeyException('turnstile', 'The secret was refused: '.implode(', ', $codes).'.', $codes[0]);
@@ -130,8 +130,8 @@ final class TurnstileGateway implements ChallengeInterface, DeclaresUsagePolicyI
             throw new ProviderException('turnstile', 'The request was not understood: bad-request.', 'bad-request');
         }
 
-        $action = isset($data['action']) && '' !== $data['action'] ? (string) $data['action'] : null;
-        $hostname = isset($data['hostname']) && '' !== $data['hostname'] ? (string) $data['hostname'] : null;
+        $action = self::textOrNull($data['action'] ?? null);
+        $hostname = self::textOrNull($data['hostname'] ?? null);
         $at = self::date($data['challenge_ts'] ?? null);
         if (true !== ($data['success'] ?? null)) {
             $reasons = array_values(array_unique(array_map(static fn (string $code) => self::REASONS[$code] ?? Verdict::INVALID, $codes ?: ['invalid-input-response'])));
@@ -140,7 +140,8 @@ final class TurnstileGateway implements ChallengeInterface, DeclaresUsagePolicyI
         }
 
         // Cloudflare's testing keys pass a dummy token for any host and no action.
-        $testing = true === ($data['metadata']['result_with_testing_key'] ?? null);
+        $metadata = \is_array($data['metadata'] ?? null) ? $data['metadata'] : [];
+        $testing = true === ($metadata['result_with_testing_key'] ?? null);
         $reasons = [];
         if (!$testing && null !== $attempt->action && $attempt->action !== $action) {
             $reasons[] = Verdict::ACTION;
@@ -156,6 +157,29 @@ final class TurnstileGateway implements ChallengeInterface, DeclaresUsagePolicyI
     private function siteverify(array $body): Answer
     {
         return Answer::send($this->http, 'turnstile', 'POST', rtrim($this->baseUri, '/').'/siteverify', ['body' => $body], $this->backoff);
+    }
+
+    /** A field as text, null when empty or absent, as the isset() and '' checks read it; a nested value, which no answer holds, empty. */
+    private static function textOrNull(mixed $value): ?string
+    {
+        return null === $value || '' === $value ? null : (\is_scalar($value) ? (string) $value : '');
+    }
+
+    /**
+     * A list of codes as strval() read them (one given alone as a list of one); what is not a scalar is left out.
+     *
+     * @return list<string>
+     */
+    private static function texts(mixed $value): array
+    {
+        $texts = [];
+        foreach ((array) $value as $one) {
+            if (\is_scalar($one) || null === $one) {
+                $texts[] = (string) $one;
+            }
+        }
+
+        return $texts;
     }
 
     private static function date(mixed $value): ?\DateTimeImmutable
