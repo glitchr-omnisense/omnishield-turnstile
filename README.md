@@ -34,6 +34,14 @@ Cloudflare's Turnstile privacy addendum.
 [Documentation](docs/index.md): what it calls, the credentials, the capabilities, an example run offline, the errors, the options, the answers, the testing keys, what was verified -
 the three testing secrets against Cloudflare, on 2026-10-07.
 
+## Install
+
+```sh
+composer require omnishield/turnstile
+```
+
+It brings the family's core, `omnisense/omnishield`, and `omnisense/contracts` with it. **A Turnstile site key and secret are needed** (a Cloudflare account, free). Cloudflare's published testing keys answer without an account ([docs/](docs/index.md)).
+
 ## Usage policy
 
 [`policy.json`](policy.json) (omnisense/contracts' schema, read at the provider's terms on 2026-11-10; its `provenance.notes` says what was read where): No rate limit on the Free plan ("Unlimited challenges"); commercial use allowed; Cloudflare's branding stays on the widget. A 429 and its `Retry-After` hold the next calls (`UnreachableException::retryAfter()`). See the core's [usage policies](https://github.com/glitchr-omnisense/omnishield/blob/1.x/docs/policies.md).
